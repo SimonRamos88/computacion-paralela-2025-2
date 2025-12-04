@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="co.edu.unal.paralela.ReciprocalArraySumTest" time="36.739" tests="4" errors="0" skipped="0" failures="1">
+<testsuite name="co.edu.unal.paralela.MatrixMultiplyTest" time="13.378" tests="2" errors="0" skipped="0" failures="2">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="21.0.6+8-LTS-188"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="D:\Decimo Semestre\Paralela\ejercicio_1"/>
+    <property name="maven.multiModuleProjectDirectory" value="D:\Decimo Semestre\Paralela\ejercicio_3"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
     <property name="guice.disable.misplaced.annotation.check" value="true"/>
@@ -15,7 +15,7 @@
     <property name="user.country" value="CO"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="D:\Decimo Semestre\Paralela\ejercicio_1"/>
+    <property name="user.dir" value="D:\Decimo Semestre\Paralela\ejercicio_3"/>
     <property name="java.vm.compressedOopsMode" value="Zero based"/>
     <property name="java.runtime.version" value="21.0.6+8-LTS-188"/>
     <property name="os.arch" value="amd64"/>
@@ -60,14 +60,18 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase name="testParManyTaskTwoMillion" classname="co.edu.unal.paralela.ReciprocalArraySumTest" time="0.162"/>
-  <testcase name="testParSimpleTwoMillion" classname="co.edu.unal.paralela.ReciprocalArraySumTest" time="0.11"/>
-  <testcase name="testParSimpleTwoHundredMillion" classname="co.edu.unal.paralela.ReciprocalArraySumTest" time="16.024"/>
-  <testcase name="testParManyTaskTwoHundredMillion" classname="co.edu.unal.paralela.ReciprocalArraySumTest" time="20.443">
-    <failure message="Se esperaba que la implmentación de muchas tareas en paralelo pudiera ejecutarse  12,800000x veces más rápido, pero solo alcanzo a mejorar la rapidez (speedup) 10,034483x veces" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Se esperaba que la implmentación de muchas tareas en paralelo pudiera ejecutarse  12,800000x veces más rápido, pero solo alcanzo a mejorar la rapidez (speedup) 10,034483x veces
+  <testcase name="testPar768_x_768" classname="co.edu.unal.paralela.MatrixMultiplyTest" time="10.392">
+    <failure message="It was expected that the parallel implementation would run at least 9,600000x faster, but it only achieved 6,746032x speedup" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: It was expected that the parallel implementation would run at least 9,600000x faster, but it only achieved 6,746032x speedup
 	at junit.framework.Assert.fail(Assert.java:47)
 	at junit.framework.Assert.assertTrue(Assert.java:20)
-	at co.edu.unal.paralela.ReciprocalArraySumTest.testParManyTaskTwoHundredMillion(ReciprocalArraySumTest.java:149)
+	at co.edu.unal.paralela.MatrixMultiplyTest.testPar768_x_768(MatrixMultiplyTest.java:128)
+</failure>
+  </testcase>
+  <testcase name="testPar512_x_512" classname="co.edu.unal.paralela.MatrixMultiplyTest" time="2.986">
+    <failure message="It was expected that the parallel implementation would run at least 9,600000x faster, but it only achieved 6,777778x speedup" type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: It was expected that the parallel implementation would run at least 9,600000x faster, but it only achieved 6,777778x speedup
+	at junit.framework.Assert.fail(Assert.java:47)
+	at junit.framework.Assert.assertTrue(Assert.java:20)
+	at co.edu.unal.paralela.MatrixMultiplyTest.testPar512_x_512(MatrixMultiplyTest.java:116)
 </failure>
   </testcase>
 </testsuite>

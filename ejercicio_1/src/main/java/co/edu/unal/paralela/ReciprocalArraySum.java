@@ -170,26 +170,25 @@ public final class ReciprocalArraySum {
     protected static double parArraySum(final double[] input) {
         assert input.length % 2 == 0;
 
-        // Creamos un pool dedicado con 2 hilos para máximo paralelismo
         ForkJoinPool pool = new ForkJoinPool(2);
-        
+
         try {
-            // Calculamos el punto medio para dividir el arreglo en dos
             int midpoint = input.length / 2;
-            
-            // Creamos dos tareas para las dos mitades
+
             ReciprocalArraySumTask leftTask = new ReciprocalArraySumTask(0, midpoint, input);
             ReciprocalArraySumTask rightTask = new ReciprocalArraySumTask(midpoint, input.length, input);
-            
-            // Ejecutamos las tareas en paralelo usando fork/join
-            leftTask.fork();
-            rightTask.compute();
-            leftTask.join();
-            
-            // Combinamos los resultados
-            double sum = leftTask.getValue() + rightTask.getValue();
-            
-            return sum;
+
+            // Creamos una tarea "envolvente" que lance ambas subtareas
+            RecursiveAction mainTask = new RecursiveAction() {
+                @Override
+                protected void compute() {
+                    invokeAll(leftTask, rightTask);
+                }
+            };
+
+            pool.invoke(mainTask); // ✅ se ejecuta en el pool creado
+
+            return leftTask.getValue() + rightTask.getValue();
         } finally {
             pool.shutdown();
         }
@@ -205,37 +204,32 @@ public final class ReciprocalArraySum {
      * @param numTasks El número de tareas para crear
      * @return La suma de los recíprocos del arreglo de entrada
      */
-    protected static double parManyTaskArraySum(final double[] input,
-            final int numTasks) {
-        // Creamos un pool dedicado con el número de tareas para máximo paralelismo
+    protected static double parManyTaskArraySum(final double[] input, final int numTasks) {
         ForkJoinPool pool = new ForkJoinPool(numTasks);
-        
+
         try {
-            // Creamos exactamente numTasks tareas usando los métodos helper
             ReciprocalArraySumTask[] tasks = new ReciprocalArraySumTask[numTasks];
-            
+
             for (int i = 0; i < numTasks; i++) {
                 int start = getChunkStartInclusive(i, numTasks, input.length);
                 int end = getChunkEndExclusive(i, numTasks, input.length);
                 tasks[i] = new ReciprocalArraySumTask(start, end, input);
             }
-            
-            // Ejecutamos todas las tareas en paralelo
-            for (int i = 0; i < numTasks; i++) {
-                tasks[i].fork();
-            }
-            
-            // Esperamos a que todas las tareas terminen
-            for (int i = 0; i < numTasks; i++) {
-                tasks[i].join();
-            }
-            
-            // Combinamos los resultados
+
+            RecursiveAction mainTask = new RecursiveAction() {
+                @Override
+                protected void compute() {
+                    invokeAll(tasks); // ✅ ejecuta todas las tareas dentro del pool
+                }
+            };
+
+            pool.invoke(mainTask);
+
             double sum = 0;
             for (ReciprocalArraySumTask task : tasks) {
                 sum += task.getValue();
             }
-            
+
             return sum;
         } finally {
             pool.shutdown();
